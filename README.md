@@ -135,5 +135,5 @@ Projet libre à usage pédagogique.
 
 ✨ Auteur
 
-CodeEnJava
+CodeEnJava (c)BAROIS Stéphane
 Formation Java orientée projet réel.
