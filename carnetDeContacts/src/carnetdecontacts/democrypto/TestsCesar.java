@@ -11,14 +11,15 @@ public class TestsCesar {
 		
 		
 		message = "@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !";
+		System.out.println(message);
 		test1(message);
 		
 	}
 	
 	private static void test1(String message) {
-CesarCipherService  ccs = new CesarCipherService();
+		CesarCipherService  ccs = new CesarCipherService();
 		
-		String crypte = ccs.encrypt(message, "5");
+		String crypte = ccs.encrypt(message, "-12");
 		System.out.println(crypte);
 		//  un petit bug
 		// -1-1-1-1-1-1-1 -1-1-1 -1-1-1-1-1-1-1 -1-1-1-1-1-1-1-1-1-1
@@ -26,7 +27,7 @@ CesarCipherService  ccs = new CesarCipherService();
 		// Gtsotzw Ejx htijzwx HtijJsOfAf
 		
 		
-		String decripte = ccs.decrypt(crypte, "5");
+		String decripte = ccs.decrypt(crypte, "-12");
 		
 		System.out.println(decripte);
 		
