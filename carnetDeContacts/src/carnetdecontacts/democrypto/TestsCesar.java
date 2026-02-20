@@ -10,7 +10,14 @@ public class TestsCesar {
 		//test1(message);
 		
 		
-		message = "@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !";
+		message = "@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
+				+ "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
+		        + "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
+		        + "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
+		        + "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
+		        + "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
+		        + "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
+				+ "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !";
 		System.out.println(message);
 		test1(message);
 		

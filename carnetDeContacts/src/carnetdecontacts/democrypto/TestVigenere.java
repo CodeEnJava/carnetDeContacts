@@ -7,7 +7,16 @@ public class TestVigenere {
 	public static void main(String[] args) {
 		VigenereCipherService vcs = new VigenereCipherService();
 		
-		String message ="Bonjour à tous,\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère...";
+		String message ="Bonjour à tous,\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère..."+
+				"\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère..."+
+				"\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère..."+
+				"\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère..."+
+				"\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère..."+
+				"\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère..."+
+				"\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère..."+
+				"\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère..."+
+				"\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère..."+
+			    "\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère...";
 		String key = "@#code01!?#@";
 		System.out.println(message);
 		String crypt = vcs.encrypt(message, key);

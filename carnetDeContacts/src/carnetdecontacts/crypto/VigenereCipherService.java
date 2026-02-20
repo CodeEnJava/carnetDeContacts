@@ -1,5 +1,23 @@
 package carnetdecontacts.crypto;
 
+/**
+ * Implémentation du chiffrement de Vigenère.
+ *
+ * <p>Le chiffrement de Vigenère est un algorithme
+ * poly-alphabétique utilisant une clé textuelle.
+ * Chaque caractère du message est décalé selon
+ * la position du caractère correspondant dans la clé.</p>
+ *
+ * <p>Exemple :</p>
+ * <pre>
+ * Message : BONJOUR
+ * Clé     : CODE
+ * Résultat: DCQNQIU
+ * </pre>
+ *
+ * <p>L’algorithme applique un modulo sur la longueur
+ * de l’alphabet pour assurer un chiffrement circulaire.</p>
+ */
 public class VigenereCipherService implements Cipher {
 
 	@Override
@@ -39,17 +57,35 @@ public class VigenereCipherService implements Cipher {
 	 *  DCQNQIU
 	 *  DCQNQIU
 	 */
+	
+	/**
+	 * Méthode interne factorisant la logique de chiffrement
+	 * et de déchiffrement.
+	 *
+	 * @param message message à traiter
+	 * @param key clé textuelle
+	 * @param encryptDecrypt true pour chiffrer, false pour déchiffrer
+	 * @return message transformé
+	 */
 	private String encryptDecrypt(String message, String key,boolean encryptDecrypt) {
+		//prévoir la gestion des erreurs....
+		
+		
+		// fin gestion des erreurs
 		StringBuilder sb = new StringBuilder();
 		int keyIndex = 0; // On se place sur le premier caractère de la clé
 		int newPos = -1;
-		;
+		
 		for(int i=0;i<message.length();i++) {
 			char c = message.charAt(i);
 			
-			if(AlphabetCipher.ALPHABETNUMBER.indexOf(c)!=-1) {
-				int msgPos = AlphabetCipher.ALPHABETNUMBER.indexOf(c);
-				int keyPos = AlphabetCipher.ALPHABETNUMBER.indexOf(key.charAt(keyIndex%key.length()));
+			if(AlphabetCipher.CHARINDEXMAP.get(c)!=null && AlphabetCipher.CHARINDEXMAP.get(key.charAt(keyIndex%key.length()))!=null) {
+				//System.out.println("c= "+c);
+				int msgPos = AlphabetCipher.CHARINDEXMAP.get(c);
+				//System.out.println("keyIndex%key.length() = "+keyIndex%key.length());
+				//System.out.println("key.charAt(keyIndex%key.length()= "+key.charAt(keyIndex%key.length()));
+				int keyPos = AlphabetCipher.CHARINDEXMAP.get(key.charAt(keyIndex%key.length()));
+				//System.out.println("keyPos= "+keyPos);
 				if(encryptDecrypt)
 					newPos = (msgPos+keyPos)%AlphabetCipher.LENGTH;
 				else 

@@ -1,20 +1,19 @@
 package carnetdecontacts.crypto;
 /**
- * Explication du chiffrement de César
- * 
- * ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
- * key = 5
- * 
- * String message = "Bonjour zes codeurs CodeEnJava";
- * 			   Gtsotzw Ej......
- * 			   Gtsotzw Ejx
- * 
- * ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
- * key = -5
- * 
- * String message = "Bonjour zes codeurs CodeEnJava";
- * 					 wji.....
- * 			         
+ * Implémentation du chiffrement de César.
+ *
+ * <p>Le chiffrement de César est un algorithme de substitution
+ * mono-alphabétique basé sur un décalage circulaire
+ * des caractères dans l’alphabet.</p>
+ *
+ * <p>Exemple :
+ * clé = 3
+ * A → D
+ * B → E
+ * </p>
+ *
+ * <p>La clé peut être positive (décalage à droite)
+ * ou négative (décalage à gauche).</p>
  */
 public class CesarCipherService implements Cipher {
 	
@@ -25,6 +24,14 @@ public class CesarCipherService implements Cipher {
 		
 	}
 	
+	/**
+	 * Chiffre un message en appliquant un décalage circulaire.
+	 *
+	 * @param message message à chiffrer
+	 * @param key clé numérique représentant le décalage
+	 * @return message chiffré
+	 * 
+	 */
 	private boolean isNumber(String num) {
 		try {
 			@SuppressWarnings("unused")
@@ -35,9 +42,16 @@ public class CesarCipherService implements Cipher {
 		}
 	}
 	
+	/**
+	 * Déchiffre un message chiffré avec l’algorithme de César.
+	 *
+	 * @param message message chiffré
+	 * @param key clé numérique utilisée lors du chiffrement
+	 * @return message original
+	 */
 	@Override
 	public String encrypt(String message, String key) {
-		// si key > 0 décallage vers la droite sinon décallage vers la gauche
+		// si key > 0 décalage vers la droite sinon décalage vers la gauche
 		//Prévoir la gestion des erreurs
 		if(message == null)
 			throw new RuntimeException("Erreur 01 :\nLe paramétre contenant le message à chiffrer ne peut pas être null.");
@@ -55,8 +69,8 @@ public class CesarCipherService implements Cipher {
 		StringBuilder sb = new StringBuilder();
 		
 		for(char c:message.toCharArray()) {
-			if(AlphabetCipher.ALPHABETNUMBER.indexOf(c)!= -1) {
-				int pos = (AlphabetCipher.ALPHABETNUMBER.indexOf(c)+shift)% AlphabetCipher.LENGTH;
+			if(AlphabetCipher.CHARINDEXMAP.get(c)!=null) {
+				int pos = (AlphabetCipher.CHARINDEXMAP.get(c)+shift)% AlphabetCipher.LENGTH;
 				//System.out.println("pos ="+pos);
 				if(pos<0)
 					pos = AlphabetCipher.LENGTH+pos;
