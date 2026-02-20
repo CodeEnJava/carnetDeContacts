@@ -87,7 +87,7 @@ public class VigenereCipherService implements Cipher {
 			throw new CryptoException("Erreur 05 :\nLe paramétre contenant la clé ne peut pas être null.");
 		
 		if(!keyAuthorized(key))
-			throw new CryptoException("Erreur 06 :\nUtiliser uniquement des caractères se trouvant dans la map...");
+			throw new CryptoException("Erreur 06 :\nUtiliser uniquement des caractères se trouvant dans la map...");       
 		// fin gestion des erreurs
 		StringBuilder sb = new StringBuilder();
 		int keyIndex = 0; // On se place sur le premier caractère de la clé
