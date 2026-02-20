@@ -58,6 +58,17 @@ public class VigenereCipherService implements Cipher {
 	 *  DCQNQIU
 	 */
 	
+	
+	
+	private boolean keyAuthorized(String key) {
+		for(int i=0;i<key.length();i++) {
+			char c = key.charAt(i);
+			if(AlphabetCipher.CHARINDEXMAP.get(c)==null)
+				return false;
+		 }
+		return true;
+	}
+	
 	/**
 	 * Méthode interne factorisant la logique de chiffrement
 	 * et de déchiffrement.
@@ -69,8 +80,14 @@ public class VigenereCipherService implements Cipher {
 	 */
 	private String encryptDecrypt(String message, String key,boolean encryptDecrypt) {
 		//prévoir la gestion des erreurs....
+		if(message == null)
+			throw new CryptoException("Erreur 04 :\nLe paramétre contenant le message à chiffrer ne peut pas être null.");
 		
+		if(key == null)
+			throw new CryptoException("Erreur 05 :\nLe paramétre contenant la clé ne peut pas être null.");
 		
+		if(!keyAuthorized(key))
+			throw new CryptoException("Erreur 06 :\nUtiliser uniquement des caractères se trouvant dans la map...");
 		// fin gestion des erreurs
 		StringBuilder sb = new StringBuilder();
 		int keyIndex = 0; // On se place sur le premier caractère de la clé

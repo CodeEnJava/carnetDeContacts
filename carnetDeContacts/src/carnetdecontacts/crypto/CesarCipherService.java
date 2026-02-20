@@ -54,13 +54,13 @@ public class CesarCipherService implements Cipher {
 		// si key > 0 décalage vers la droite sinon décalage vers la gauche
 		//Prévoir la gestion des erreurs
 		if(message == null)
-			throw new RuntimeException("Erreur 01 :\nLe paramétre contenant le message à chiffrer ne peut pas être null.");
+			throw new CryptoException("Erreur 01 :\nLe paramétre contenant le message à chiffrer ne peut pas être null.");
 		
 		if(key == null)
-			throw new RuntimeException("Erreur 02 :\nLe paramétre contenant la clé ne peut pas être null.");
+			throw new CryptoException("Erreur 02 :\nLe paramétre contenant la clé ne peut pas être null.");
 		
 		if(!isNumber(key))
-			throw new RuntimeException("Erreur 03 :\nLe paramétre contenant la clé doit contenir un nombre entier.");
+			throw new CryptoException("Erreur 03 :\nLe paramétre contenant la clé doit contenir un nombre entier.");
 		
 		// fin de la gestion des erreurs
 		

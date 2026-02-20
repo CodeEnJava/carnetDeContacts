@@ -17,6 +17,7 @@ public class TestVigenere {
 				"\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère..."+
 				"\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère..."+
 			    "\nBonjour à tous,\\nBienvenue sur cette vidéo mettant oeuvre le chiffrement de Vignère...";
+		
 		String key = "@#code01!?#@";
 		System.out.println(message);
 		String crypt = vcs.encrypt(message, key);
