@@ -84,5 +84,35 @@ public final class AsciiPrintableEncoding implements EncodingStrategy {
 		}
 		return true;
 	}
+	
+	/*
+	 * La stratégies AsciiPrintableEncoding est un excellent compromis entre les deux autres stratégies implémentée 
+	 * précédement.
+	 * 
+	 * Elle est compatible systèmes
+	 * Adapté aux mot de passe
+	 * Simple et perfomant
+	 * 
+	 * Exemple concret:
+	 * 
+	 * Message = "Hello123!"
+	 * Chaque caractère:
+	 *     --> converti en index
+	 *     --> Transformé mathématiquement
+	 *     --> Reconstruit  via ToChar()
+	 *     
+	 *     SI un caractère comme 'é' apparait, il y a une exception immédiate
+	 *     
+	 *  Avec AsciiPrintableEncoding nous avons,
+	 *  --> une nouvelle stratégie interchangeable
+	 *  --> Un domaine bien défini
+	 *  --> Une validation robuste
+	 *  --> une Achitecture propre
+	 *  
+	 *  C'est exactement l'objectif du pattern Strategy
+	 *  Séparer le comportement variable du reste du systeme.
+	 *  
+	 *     
+	 */
 
 }
