@@ -21,13 +21,13 @@ package carnetdecontacts.crypto;
 public class VigenereCipherService implements Cipher {
 
 	@Override
-	public String encrypt(String message, String key) {
-		return encryptDecrypt(message, key, true);
+	public String encrypt(String message, String ...key) {
+		return encryptDecrypt(message,  true, key);
 	}
 
 	@Override
-	public String decrypt(String message, String key) {
-		return encryptDecrypt(message, key, false);
+	public String decrypt(String message, String ...key) {
+		return encryptDecrypt(message,  false,key);
 	}
 	
 	
@@ -63,7 +63,7 @@ public class VigenereCipherService implements Cipher {
 	private boolean keyAuthorized(String key) {
 		for(int i=0;i<key.length();i++) {
 			char c = key.charAt(i);
-			if(AlphabetCipher.CHARINDEXMAP.get(c)==null)
+			if(AlphabetCipher.CHAR_INDEX_MAP.get(c)==null)
 				return false;
 		 }
 		return true;
@@ -78,16 +78,9 @@ public class VigenereCipherService implements Cipher {
 	 * @param encryptDecrypt true pour chiffrer, false pour déchiffrer
 	 * @return message transformé
 	 */
-	private String encryptDecrypt(String message, String key,boolean encryptDecrypt) {
+	private String encryptDecrypt(String message,boolean encryptMode,String ...key) {
 		//prévoir la gestion des erreurs....
-		if(message == null)
-			throw new CryptoException("Erreur 04 :\nLe paramétre contenant le message à chiffrer ne peut pas être null.");
-		
-		if(key == null)
-			throw new CryptoException("Erreur 05 :\nLe paramétre contenant la clé ne peut pas être null.");
-		
-		if(!keyAuthorized(key))
-			throw new CryptoException("Erreur 06 :\nUtiliser uniquement des caractères se trouvant dans la map...");       
+		ValidateInput( message, key) ;    
 		// fin gestion des erreurs
 		StringBuilder sb = new StringBuilder();
 		int keyIndex = 0; // On se place sur le premier caractère de la clé
@@ -96,26 +89,38 @@ public class VigenereCipherService implements Cipher {
 		for(int i=0;i<message.length();i++) {
 			char c = message.charAt(i);
 			
-			if(AlphabetCipher.CHARINDEXMAP.get(c)!=null && AlphabetCipher.CHARINDEXMAP.get(key.charAt(keyIndex%key.length()))!=null) {
-				//System.out.println("c= "+c);
-				int msgPos = AlphabetCipher.CHARINDEXMAP.get(c);
-				//System.out.println("keyIndex%key.length() = "+keyIndex%key.length());
-				//System.out.println("key.charAt(keyIndex%key.length()= "+key.charAt(keyIndex%key.length()));
-				int keyPos = AlphabetCipher.CHARINDEXMAP.get(key.charAt(keyIndex%key.length()));
-				//System.out.println("keyPos= "+keyPos);
-				if(encryptDecrypt)
-					newPos = (msgPos+keyPos)%AlphabetCipher.LENGTH;
-				else 
-					newPos = (msgPos-keyPos+AlphabetCipher.LENGTH)%AlphabetCipher.LENGTH;
+			if(AlphabetCipher.CHAR_INDEX_MAP.get(c)!=null && 
+					AlphabetCipher.CHAR_INDEX_MAP.get(key[0].charAt(keyIndex%key[0].length()))!=null) {
+				int msgPos = AlphabetCipher.CHAR_INDEX_MAP.get(c);
+				
+				int keyPos = AlphabetCipher.CHAR_INDEX_MAP.get(key[0].charAt(keyIndex%key[0].length()));
+				
+				newPos = encryptMode
+									?(msgPos+keyPos)%AlphabetCipher.LENGTH
+									:(msgPos-keyPos+AlphabetCipher.LENGTH)%AlphabetCipher.LENGTH;
 				
 				keyIndex++;
-				sb.append(AlphabetCipher.ALPHABETNUMBER.charAt(newPos));
+				sb.append(AlphabetCipher.CUSTOM_ALPHABET_NUMBER.charAt(newPos));
 			}else
 				sb.append(c);
 			
 		}
 		return sb.toString();
 		
+	}
+	
+	private void ValidateInput(String message, String ...key) {
+		if(message == null)
+			throw new CryptoException("Erreur 05 :\nLe paramétre contenant le message à chiffrer ne peut pas être null.");
+		
+		if(key == null || key.length==0)
+			throw new CryptoException("Erreur 06 :\nLa clé est obligatoire.");
+		
+		if(key[0] == null )
+			throw new CryptoException("Erreur 07 :\nLa clé ne peut pas être null.");
+		
+		if(!keyAuthorized(key[0]))
+			throw new CryptoException("Erreur 08 :\nUtiliser uniquement des caractères se trouvant dans la map..."); 
 	}
 
 }
