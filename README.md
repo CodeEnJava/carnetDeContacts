@@ -1,139 +1,81 @@
-📒 Carnet de Contacts Sécurisé — Java 17
+# 🔐 Carnet de Contacts Sécurisé — Module de Cryptographie Java
 
-Projet pédagogique complet en Java visant à construire un carnet de contacts sécurisé, avec chiffrement des données, sauvegarde sur disque, CRUD et interfaces utilisateur.
+![Java](https://img.shields.io/badge/Java-17+-orange)
+![Architecture](https://img.shields.io/badge/Architecture-SOLID-blue)
+![Design Pattern](https://img.shields.io/badge/Pattern-Strategy-green)
+![Status](https://img.shields.io/badge/Status-Work%20in%20Progress-yellow)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
 
-Ce dépôt accompagne une série vidéo disponible sur YouTube (chaîne CodeEnJava).
+Projet pédagogique illustrant la conception d’un **module de cryptographie extensible en Java** dans le cadre d’un **carnet de contacts sécurisé**.
 
-🎯 Objectifs pédagogiques
+---
 
-Ce projet permet d’apprendre à :
+# 📑 Sommaire
 
-Structurer un projet Java proprement
+- [Présentation](#présentation)
+- [Architecture du projet](#architecture-du-projet)
+- [Interface Cipher](#interface-cipher)
+- [Chiffrement par série arithmétique](#chiffrement-par-série-arithmétique)
+- [Gestion des clés](#gestion-des-clés)
+- [Pattern Strategy pour l'encodage](#pattern-strategy-pour-lencodage)
+- [Diagramme UML](#diagramme-uml)
+- [Exemple d'utilisation](#exemple-dutilisation)
+- [Preuve de réversibilité](#preuve-de-réversibilité)
+- [Comparaison des algorithmes](#comparaison-des-algorithmes)
+- [Objectifs pédagogiques](#objectifs-pédagogiques)
+- [Évolutions possibles](#évolutions-possibles)
+- [Public cible](#public-cible)
+- [Licence](#licence)
 
-Implémenter un système de chiffrement (César, XOR, etc.)
+---
 
-Manipuler des fichiers (lecture / écriture sécurisée)
+# 📌 Présentation
 
-Mettre en place un CRUD complet
+Ce module permet d’expérimenter plusieurs **algorithmes de chiffrement classiques** :
 
-Séparer logique métier / services / IHM
+- Chiffrement de **César**
+- Chiffrement de **Vigenère**
+- Chiffrement basé sur une **série arithmétique**
 
-Créer une interface console
+Le projet met l’accent sur :
 
-Créer une interface graphique avec Swing
+- la **qualité de l’architecture**
+- la **réutilisabilité du code**
+- la **séparation des responsabilités**
 
-Niveau visé : débutant → intermédiaire (Bac+2)
+---
 
-🧱 Architecture du projet
-src/
- ├── cipher/          → Interfaces et implémentations de chiffrement
- ├── model/           → Contact, Adresse
- ├── service/         → ContactService (CRUD)
- ├── persistence/     → Sauvegarde / lecture disque
- ├── ui/console/      → Version console
- ├── ui/swing/        → Version graphique Swing
- └── Main.java
+# 🧱 Architecture du projet
 
-🔐 Fonctionnalités
-✅ Chiffrement
+Le cœur du système repose sur une interface commune à tous les algorithmes :
 
-Interface Cipher
+```java
+Cipher
 
-Implémentation César (première version)
+Les implémentations concrètes utilisent :
 
-Extensions possibles : XOR, Vigenère, etc.
+une stratégie d'encodage
 
-✅ Gestion des contacts (CRUD)
+une clé spécifique à l’algorithme
 
-Ajouter un contact
+Schéma d’architecture
 
-Lire tous les contacts
+```mermaid
+flowchart LR
 
-Modifier un contact
+A[Application] --> B[Cipher Interface]
 
-Supprimer un contact
+B --> C[CesarCipherService]
+B --> D[VigenereCipherService]
+B --> E[ArithmeticSerieCipherService]
 
-✅ Persistance
+E --> F[ArithmeticKeys]
 
-Sauvegarde des données chiffrées sur disque
+C --> G[EncodingStrategy]
+D --> G
+E --> G
 
-Lecture + reconstruction des objets
-
-✅ Interfaces
-
-Menu console interactif
-
-Interface graphique Swing
-
-📦 Dépendances
-
-Le projet utilise les bibliothèques suivantes :
-
-jIO-25.06.jar
-
-jStructure-25.06.02.jar
-
-jClearScreen.jar
-
-👉 À placer dans un dossier /lib et à ajouter au classpath.
-
-▶️ Lancer le projet
-Prérequis
-
-Java 17+
-
-IDE (IntelliJ, Eclipse ou VS Code recommandé)
-
-Étapes
-
-Cloner le dépôt :
-
-git clone https://github.com/TON_COMPTE/carnet-contacts-java.git
-
-
-Importer dans ton IDE
-
-Ajouter les JAR dans le classpath
-
-Lancer Main.java
-
-🧪 Exemple console
-1 - Ajouter un contact
-2 - Afficher les contacts
-3 - Modifier un contact
-4 - Supprimer un contact
-0 - Quitter
-
-🚧 Évolutions possibles
-
-Tests unitaires (JUnit)
-
-Hash + salt
-
-Injection de dépendances
-
-Mini container maison
-
-Export CSV
-
-Recherche multicritère
-
-UI améliorée
-
-👨‍🏫 Usage pédagogique
-
-Ce projet peut servir :
-
-✅ TP fil rouge
-✅ support de formation
-✅ démonstration d’architecture
-✅ base de projet étudiant
-
-📜 Licence
-
-Projet libre à usage pédagogique.
-
-✨ Auteur
-
-CodeEnJava (c)BAROIS Stéphane
-Formation Java orientée projet réel.
+G --> H[AsciiPrintableEncoding]
+G --> I[UnicodeEncoding]
+G --> J[CustomAlphabetEncoding]
+```
