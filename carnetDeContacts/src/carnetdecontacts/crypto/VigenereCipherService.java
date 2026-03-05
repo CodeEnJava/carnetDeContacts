@@ -21,12 +21,12 @@ package carnetdecontacts.crypto;
 public class VigenereCipherService implements Cipher {
 
 	@Override
-	public String encrypt(String message, String ...key) {
+	public String encrypt(String message, Object ...key) {
 		return encryptDecrypt(message,  true, key);
 	}
 
 	@Override
-	public String decrypt(String message, String ...key) {
+	public String decrypt(String message, Object ...key) {
 		return encryptDecrypt(message,  false,key);
 	}
 	
@@ -78,9 +78,11 @@ public class VigenereCipherService implements Cipher {
 	 * @param encryptDecrypt true pour chiffrer, false pour déchiffrer
 	 * @return message transformé
 	 */
-	private String encryptDecrypt(String message,boolean encryptMode,String ...key) {
+	private String encryptDecrypt(String message,boolean encryptMode,Object ...objkey) {
 		//prévoir la gestion des erreurs....
-		ValidateInput( message, key) ;    
+		ValidateInput( message, objkey) ; 
+		
+		String key = (String)objkey[0];
 		// fin gestion des erreurs
 		StringBuilder sb = new StringBuilder();
 		int keyIndex = 0; // On se place sur le premier caractère de la clé
@@ -90,10 +92,10 @@ public class VigenereCipherService implements Cipher {
 			char c = message.charAt(i);
 			
 			if(AlphabetCipher.CHAR_INDEX_MAP.get(c)!=null && 
-					AlphabetCipher.CHAR_INDEX_MAP.get(key[0].charAt(keyIndex%key[0].length()))!=null) {
+					AlphabetCipher.CHAR_INDEX_MAP.get(key.charAt(keyIndex%key.length()))!=null) {
 				int msgPos = AlphabetCipher.CHAR_INDEX_MAP.get(c);
 				
-				int keyPos = AlphabetCipher.CHAR_INDEX_MAP.get(key[0].charAt(keyIndex%key[0].length()));
+				int keyPos = AlphabetCipher.CHAR_INDEX_MAP.get(key.charAt(keyIndex%key.length()));
 				
 				newPos = encryptMode
 									?(msgPos+keyPos)%AlphabetCipher.LENGTH
@@ -109,7 +111,7 @@ public class VigenereCipherService implements Cipher {
 		
 	}
 	
-	private void ValidateInput(String message, String ...key) {
+	private void ValidateInput(String message, Object ...key) {
 		if(message == null)
 			throw new CryptoException("Erreur 05 :\nLe paramétre contenant le message à chiffrer ne peut pas être null.");
 		
@@ -119,7 +121,7 @@ public class VigenereCipherService implements Cipher {
 		if(key[0] == null )
 			throw new CryptoException("Erreur 07 :\nLa clé ne peut pas être null.");
 		
-		if(!keyAuthorized(key[0]))
+		if(!keyAuthorized((String)key[0]))
 			throw new CryptoException("Erreur 08 :\nUtiliser uniquement des caractères se trouvant dans la map..."); 
 	}
 

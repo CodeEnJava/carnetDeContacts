@@ -33,7 +33,12 @@ public interface Cipher {
      * @return message chiffré
      * @throws CryptoException en cas de paramètre invalide
      */
-	public String encrypt(String message,String ...key);
+	
+	/*
+	 * Modification utilisation d'un tableau d'objets, pour permettre l'utilisation de
+	 * ArithmeticKey
+	 */
+	public String encrypt(String message,Object ...key);
 	
 	 /**
      * Déchiffre un message.
@@ -43,5 +48,10 @@ public interface Cipher {
      * @return message original
      * @throws CryptoException en cas de paramètre invalide
      */
-	public String decrypt(String message,String ...key);
+	
+	/*
+	 * Modification utilisation d'un tableau d'objets, pour permettre l'utilisation de
+	 * ArithmeticKey
+	 */
+	public String decrypt(String message,Object ...key);
 }

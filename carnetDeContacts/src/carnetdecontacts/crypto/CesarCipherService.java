@@ -50,13 +50,13 @@ public class CesarCipherService implements Cipher {
 	 * @return message original
 	 */
 	@Override
-	public String encrypt(String message, String ...key) {
+	public String encrypt(String message, Object ...key) {
 		// si key > 0 décalage vers la droite sinon décalage vers la gauche
 		//Prévoir la gestion des erreurs
 		validateInputs( message,key);
 		// fin de la gestion des erreurs
 		
-		int shift = Integer.parseInt(key[0]);
+		int shift = Integer.parseInt((String)key[0]);
 		shift %= AlphabetCipher.LENGTH;
 		StringBuilder sb = new StringBuilder();
 		
@@ -76,13 +76,13 @@ public class CesarCipherService implements Cipher {
 	}
 
 	@Override
-	public String decrypt(String message, String ...key) {
+	public String decrypt(String message, Object ...key) {
 		validateInputs( message,key);
-		int intKey = Integer.parseInt(key[0]);
+		int intKey = Integer.parseInt((String)key[0]);
 		return encrypt(message, String.valueOf(AlphabetCipher.LENGTH-intKey));
 	}
 	
-	private void validateInputs(String message, String ...key) {
+	private void validateInputs(String message, Object ...key) {
 		if(message == null)
 			throw new CryptoException("Erreur 01 :\nLe paramétre contenant le message à chiffrer ne peut pas être null.");
 		
@@ -93,7 +93,7 @@ public class CesarCipherService implements Cipher {
 			throw new CryptoException("Erreur 03 :\nla clé ne peut pas être null.");
 		
 		
-		if(!isNumber(key[0])) 
+		if(!isNumber((String)key[0])) 
 			throw new CryptoException("Erreur 04 :\nLe paramétre contenant la clé doit contenir un nombre entier.");
 		
 	}
