@@ -35,7 +35,7 @@ public final class AlphabetCipher {
 			"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	
 	public static final String CUSTOM_ALPHABET = ALPHABET_AZaz+
-			"éèàêïçù@#&'(§!?)}°-_/*+%$,;.<>`£ \n";
+			"éèàêïçù@#&'(§!?){}[]¬|°-_/*+=%$,;.<>`£ \n\\\"";
 	
 	public static final String NUMBER ="0123456789";
 	
