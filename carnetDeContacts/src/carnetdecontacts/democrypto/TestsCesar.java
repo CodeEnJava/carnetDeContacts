@@ -1,6 +1,11 @@
 package carnetdecontacts.democrypto;
 
 import carnetdecontacts.crypto.CesarCipherService;
+import carnetdecontacts.crypto.keys.CesarKey;
+import carnetdecontacts.crypto.strategy.AsciiPrintableEncoding;
+import carnetdecontacts.crypto.strategy.CustomAlphabetEncoding;
+import carnetdecontacts.crypto.strategy.EncodingStrategy;
+import carnetdecontacts.crypto.strategy.UnicodeEncoding;
 
 public class TestsCesar {
 
@@ -10,36 +15,51 @@ public class TestsCesar {
 		//test1(message);
 		
 		
-		message = "@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
-				+ "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
-		        + "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
-		        + "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
-		        + "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
-		        + "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
-		        + "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !"
-				+ "\n@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !";
+		message = "@ étudier JAVA (JDK17 & JDK21)!! pour réussir des projets solide !";
 		System.out.println(message);
-		test1(message);
-		
+		testUnicode(message,12000);
+		testCustom(message,-93);
+		message ="Bienvenue sur ma chaine JAVA";
+		testAsciiPrintable(message,2018);
 	}
 	
-	private static void test1(String message) {
-		CesarCipherService  ccs = new CesarCipherService();
+	private static void testUnicode(String message, int key) {
+		EncodingStrategy encoding = new UnicodeEncoding();
+		System.out.println("Encodage: UnicodeEncoding");
+		test( message, encoding,key);
+		System.out.println("----------------------------------");
+	}
+	
+	private static void testAsciiPrintable(String message, int key) {
+		EncodingStrategy encoding = new AsciiPrintableEncoding();
+		System.out.println("Encodage: AsciiPrintableEncoding");
+		test( message, encoding,key);
+		System.out.println("----------------------------------");
+	}
+	
+	private static void testCustom(String message, int key) {
+		EncodingStrategy encoding = new CustomAlphabetEncoding();
+		System.out.println("Encodage: CustomAlphabetEncoding");
+		test( message, encoding,key);
+		System.out.println("----------------------------------");
+	}
+	
+	private static void test(String message,EncodingStrategy encoding,int intkey) {
 		
-		String crypte = ccs.encrypt(message, "-12");
+		CesarCipherService  ccs = new CesarCipherService(encoding);
+		
+		CesarKey key = new CesarKey(intkey,encoding);
+		
+		String crypte = ccs.encrypt(message,key);
 		System.out.println(crypte);
-		//  un petit bug
-		// -1-1-1-1-1-1-1 -1-1-1 -1-1-1-1-1-1-1 -1-1-1-1-1-1-1-1-1-1
-		// après le debug
-		// Gtsotzw Ejx htijzwx HtijJsOfAf
 		
-		
-		String decripte = ccs.decrypt(crypte, "-12");
+		String decripte = ccs.decrypt(crypte, key);
 		
 		System.out.println(decripte);
 		
 		System.out.println("codage/decodage réussi ?"+(message.equals(decripte)));
 		
 	}
-
+	
+	
 }

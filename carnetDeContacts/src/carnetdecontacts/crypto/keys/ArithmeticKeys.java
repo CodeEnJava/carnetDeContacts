@@ -1,4 +1,6 @@
-package carnetdecontacts.crypto;
+package carnetdecontacts.crypto.keys;
+
+import carnetdecontacts.crypto.CryptoException;
 
 public final class ArithmeticKeys {
 

@@ -1,8 +1,8 @@
 package carnetdecontacts.democrypto;
 
-import carnetdecontacts.crypto.ArithmeticKeys;
 import carnetdecontacts.crypto.ArithmeticSerieCipherService;
 import carnetdecontacts.crypto.Cipher;
+import carnetdecontacts.crypto.keys.ArithmeticKeys;
 import carnetdecontacts.crypto.strategy.AsciiPrintableEncoding;
 import carnetdecontacts.crypto.strategy.CustomAlphabetEncoding;
 import carnetdecontacts.crypto.strategy.EncodingStrategy;
@@ -70,7 +70,7 @@ public class TestArithmeticSerie {
 		 * 
 		 * il faut impérativement apporter un correctif à la classe ArithmeticKey pour la prise en compte du domaine  OUI
 		 * 
-		 * 
+		 * a
 		 */
 	}
 

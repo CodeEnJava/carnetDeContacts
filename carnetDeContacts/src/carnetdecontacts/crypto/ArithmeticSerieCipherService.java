@@ -2,12 +2,15 @@ package carnetdecontacts.crypto;
 
 import java.util.Objects;
 
+import carnetdecontacts.crypto.keys.ArithmeticKeys;
+import carnetdecontacts.crypto.keys.CesarKey;
 import carnetdecontacts.crypto.strategy.EncodingStrategy;
 
 /*
  * Le principe , c'est utiliser sur série Arithmétique
  * 
  * Un = a + n*d
+ * 
  * 
  * avec :
  *       a : qui représente la valeur de départ (Offset initial)
@@ -70,6 +73,10 @@ public class ArithmeticSerieCipherService implements Cipher {
 	private void readKeys(Object[] key) {
 		if(key==null || key.length!=1)
 			throw new CryptoException("La clé ne peut pas être null et doit contenir une clé valide.");
+		
+		if(!(key[0] instanceof CesarKey))
+			throw new CryptoException("Erreur xx: La clé doit être du type CesarKey.");
+		
 		ArithmeticKeys keys = (ArithmeticKeys)key[0];
 		this.a = keys.getA();
 		this.d = keys.getD();

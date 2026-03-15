@@ -1,101 +1,67 @@
 package carnetdecontacts.crypto;
-/**
- * Implémentation du chiffrement de César.
- *
- * <p>Le chiffrement de César est un algorithme de substitution
- * mono-alphabétique basé sur un décalage circulaire
- * des caractères dans l’alphabet.</p>
- *
- * <p>Exemple :
- * clé = 3
- * A → D
- * B → E
- * </p>
- *
- * <p>La clé peut être positive (décalage à droite)
- * ou négative (décalage à gauche).</p>
- */
+
+import java.util.Objects;
+
+import carnetdecontacts.crypto.keys.CesarKey;
+import carnetdecontacts.crypto.strategy.EncodingStrategy;
+
 public class CesarCipherService implements Cipher {
+	
+	private EncodingStrategy encodingStrategy = null;
+	private int shift;
 	
 	
 
-	public CesarCipherService() {
-		super();
+	public CesarCipherService(EncodingStrategy encodingStrategy) {
+		this.encodingStrategy= Objects.requireNonNull(encodingStrategy);
+	}
+	
+	private void validateMessage(String message) {
+		if(!encodingStrategy.isMessageValid(message))
+			throw new CryptoException("Erreur C01: Le message ne peut pas être null et doit appartenir au domaine de l'encodage choisi.");
 		
 	}
 	
-	/**
-	 * Chiffre un message en appliquant un décalage circulaire.
-	 *
-	 * @param message message à chiffrer
-	 * @param key clé numérique représentant le décalage
-	 * @return message chiffré
-	 * 
-	 */
-	private boolean isNumber(String num) {
-		try {
-			@SuppressWarnings("unused")
-			int n = Integer.parseInt(num);
-			return true;
-		}catch(NumberFormatException nfe) {
-			return false;
-		}
+	private void readKey(Object[] objKey) {
+		if(objKey == null || objKey.length!=1)
+			throw new CryptoException("Erreur C02: La clé ne peut pas être null et doit contenir une clé valide.");
+		
+		if(!(objKey[0] instanceof CesarKey))
+			throw new CryptoException("Erreur C03: La clé doit être du type CesarKey.");
+		
+		CesarKey key = (CesarKey)objKey[0];
+		this.shift= key.getShift();
+		
 	}
 	
-	/**
-	 * Déchiffre un message chiffré avec l’algorithme de César.
-	 *
-	 * @param message message chiffré
-	 * @param key clé numérique utilisée lors du chiffrement
-	 * @return message original
-	 */
-	@Override
-	public String encrypt(String message, Object ...key) {
-		// si key > 0 décalage vers la droite sinon décalage vers la gauche
-		//Prévoir la gestion des erreurs
-		validateInputs( message,key);
-		// fin de la gestion des erreurs
+	
+	private String transform(String message,boolean encryptMode) {
+		shift %=encodingStrategy.domaineSize();
 		
-		int shift = Integer.parseInt((String)key[0]);
-		shift %= AlphabetCipher.LENGTH;
 		StringBuilder sb = new StringBuilder();
 		
-		for(char c:message.toCharArray()) {
-			if(AlphabetCipher.CHAR_INDEX_MAP.get(c)!=null) {
-				int pos = (AlphabetCipher.CHAR_INDEX_MAP.get(c)+shift)% AlphabetCipher.LENGTH;
-				//System.out.println("pos ="+pos);
-				if(pos<0)
-					pos = AlphabetCipher.LENGTH+pos;
-				sb.append(AlphabetCipher.CUSTOM_ALPHABET_NUMBER.charAt(pos));
-			}else {
-				sb.append(c);
-			}
+		for(char c: message.toCharArray()) {
+			int pos = encodingStrategy.toIndex(c);
+			int shifted = encryptMode
+					? encodingStrategy.normalize(pos+shift)
+				    : encodingStrategy.normalize(pos-shift);
+			sb.append(encodingStrategy.toChar(shifted));
 		}
-		
 		return sb.toString();
 	}
 
 	@Override
-	public String decrypt(String message, Object ...key) {
-		validateInputs( message,key);
-		int intKey = Integer.parseInt((String)key[0]);
-		return encrypt(message, String.valueOf(AlphabetCipher.LENGTH-intKey));
+	public String encrypt(String message, Object... key) {
+		validateMessage(message);
+		readKey(key);
+		return transform(message,true);
 	}
-	
-	private void validateInputs(String message, Object ...key) {
-		if(message == null)
-			throw new CryptoException("Erreur 01 :\nLe paramétre contenant le message à chiffrer ne peut pas être null.");
-		
-		if(key == null || key.length == 0)
-			throw new CryptoException("Erreur 02 :\nla clé est obligatoire.");
-		
-		if(key[0] == null ) 
-			throw new CryptoException("Erreur 03 :\nla clé ne peut pas être null.");
-		
-		
-		if(!isNumber((String)key[0])) 
-			throw new CryptoException("Erreur 04 :\nLe paramétre contenant la clé doit contenir un nombre entier.");
-		
+
+	@Override
+	public String decrypt(String message, Object... key) {
+		validateMessage(message);
+		readKey(key);
+		return transform(message,false);
 	}
 
 }
