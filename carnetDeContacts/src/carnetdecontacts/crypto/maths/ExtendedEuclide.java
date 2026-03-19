@@ -93,4 +93,20 @@ public final class ExtendedEuclide {
 		return new ExtendedEuclide(a, n).modInverse();
 	}
 	
+	
+	/* AJOUT */
+	public static boolean hasInveseModulaire(int a, int b) {
+		return new ExtendedEuclide(a, b).hasModInverse();
+	}
+	
+	public static int gcd(int a, int b) {
+		while(b!=0) {
+			int tempo = b;
+			b = a %b;
+			a = tempo;
+		}
+		
+		return Math.abs(a);
+	}
+	
 }

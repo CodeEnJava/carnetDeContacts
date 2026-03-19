@@ -1,6 +1,8 @@
 package carnetdecontacts.crypto;
 
 public final class AffineCipherSerice implements Cipher{
+	
+	
 
 	@Override
 	public String encrypt(String message, Object... key) {
@@ -13,6 +15,9 @@ public final class AffineCipherSerice implements Cipher{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	
 
 	/*
 	 * Le principe du chiffrement affine modulo N
@@ -32,7 +37,7 @@ public final class AffineCipherSerice implements Cipher{
 	 * 
 	 * Comment fonctionne le chiffrement affine modulo N
 	 * 
-	 * Pourquoi le PGCD (GCD) est indispensable dans da mise en place
+	 * Pourquoi le PGCD (GCD) est indispensable dans sa mise en place
 	 * Comment utiliser l'algorithme étendu d'EUCLIDE
 	 * 
 	 * Commencer une implémentation.
@@ -42,7 +47,7 @@ public final class AffineCipherSerice implements Cipher{
 	 *    la formule : E(x) = (ax + b) mod N
 	 *    
 	 *    x: est la position d'une lettre dans l'alphabet
-	 *    a: c'est le coéfficient mutiplicateur
+	 *    a: c'est le coefficient mutiplicateur
 	 *    b: le décallage (offset)
 	 *    N: taille de l'alphabet (pattern Strategy, la méthode domaineSize()	)
 	 *    
@@ -125,7 +130,7 @@ public final class AffineCipherSerice implements Cipher{
 	 *    
 	 *    
 	 *    	Algorithme d'Euclide
-	 *    	calcul du pgcd(a,b) --> itilisation des divisions successives
+	 *    	calcul du pgcd(a,b) --> utilisation des divisions succéssives
 	 *      le principe :  a = q*b +r (q : le quotient et r le reste de la division Euclidienne
 	 *      
 	 *      Soit le pgcd(26,5) ?
@@ -134,7 +139,7 @@ public final class AffineCipherSerice implements Cipher{
 	 *      b = 5
 	 *      
 	 *      q = a/b  --> q = 26/5 = 5  et le reste r = 1  --> 26 = 5*5 +1
-	 *      on constate que le reste est différent de 0, on continu
+	 *      on constate que le reste est différent de 0, on continue
 	 *      Mise à jour de a et b
 	 *      
 	 *      a <- b  a = 5
@@ -142,13 +147,13 @@ public final class AffineCipherSerice implements Cipher{
 	 *      
 	 *      q = a/b  --> 5/1 = 5  r = 0 
 	 *      
-	 *      fin des divisions successives
+	 *      fin des divisions succéssives
 	 *      
 	 *      pgcd(26,5) = 1 
 	 *      
 	 *      On constate que 26 et 5 sont premiers entre eux
 	 *      
-	 *      ON souhaite obtenir les coéfficient de Bézout
+	 *      ON souhaite obtenir les coéfficients de Bézout
 	 *      
 	 *      on part de la dernière équation pour lequel on a r différent de 0
 	 *      
@@ -177,10 +182,10 @@ public final class AffineCipherSerice implements Cipher{
 	 *                     
 	 *      Mettre en place une classe qui va me permettre d'obtenir
 	 *      --> pgcd
-	 *      --> les coéfficient de Bézout
+	 *      --> les coéfficients de Bézout
 	 *      --> l'inverse modulaire
 	 *      
-	 *      Mettre en place un algorithme non récursif
+	 *      Mettre en place un algorithme non recursive
 	 *      
 	 *      Elle va permettre de calculer 
 	 *      ax +by = pgcd(a,b)
@@ -279,6 +284,7 @@ public final class AffineCipherSerice implements Cipher{
 	 *       x = S(0) =  -5
 	 *       y = T(0) = 1
 	 *      
-	    
+	 *      
+	         ∀  ≡
 	 */
 }
