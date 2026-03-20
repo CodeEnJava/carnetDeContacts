@@ -1,4 +1,4 @@
-package carnetdecontacts.crypto.keys;
+package carnetdecontacts.crypto_old;
 
 import java.security.SecureRandom;
 
@@ -8,7 +8,7 @@ import carnetdecontacts.crypto.strategy.EncodingStrategy;
 import carnetdecontacts.crypto.strategy.UnicodeEncoding;
 import fr.bs.dev.input.Lecture;
 
-public final class AffineKeys {
+public final class AffineKeys_old {
 	
 /* ∀  ≡ */	
 	
@@ -26,7 +26,7 @@ public final class AffineKeys {
     private int minOrder ;
     private static int K = 4; 
 
-	public AffineKeys(int a, int b,int k, EncodingStrategy encodingStrategy) {
+	public AffineKeys_old(int a, int b,int k, EncodingStrategy encodingStrategy) {
 		
 		if(k==0 )k = K;
 		ExtendedEuclide euclide = new ExtendedEuclide(a, b);
