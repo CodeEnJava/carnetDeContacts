@@ -10,33 +10,47 @@ public final class ExtendedEuclide {
 	private final int y;
 	private final int modulus;
 	
+	//modif
+	private final int coefMultiplicateur;
+	
 	public ExtendedEuclide(int a, int b) {
-		if(b==0)
-			throw new CryptoException("Le modulo ne peut pas être 0.");
-		this.modulus = b;
-		int[] coef = compute(a,b);
 		
-		gcd = coef[0];
-		x = coef[1];
-		y= coef[2];
+		if(a == 0)
+		    throw new CryptoException("0 n'a pas d'inverse modulaire.");
+		
+		if(b == 0)
+			throw new CryptoException("Le modulo ne peut pas être 0.");
+		
+		this.modulus = Math.abs(b);
+		
+		//modif
+		this.coefMultiplicateur = a;
+		
+		long[] coef = compute(a, this.modulus);
+		
+		
+		gcd = (int) coef[0];
+		x = (int) Math.floorMod(coef[1], modulus);//pas d’overflow logique
+		y= (int) coef[2];
+		
 	}
 
-	private int[] compute(int a, int b) {
-		int r0 = a;
-		int r1 = b;
+	private long[] compute(long a, long b) {
+		long r0 = a;
+		long r1 = b;
 		
 		//      S(0) = 1  T(0) = 0
 		//      S(1) = 0  T(1) = 1
 		
-		int S0 = 1;
-		int S1 = 0;
+		long S0 = 1;
+		long S1 = 0;
 		
-		int T0 = 0;
-		int T1 = 1;
+		long T0 = 0;
+		long T1 = 1;
 		
 		while(r1!=0) {
-			int q = r0/r1;
-			int r2 = r0 -q*r1;
+			long q = r0/r1;
+			long r2 = r0 -q*r1;
 			
 			//       Mise à jour de r(0) et r(1)
 			//       r(0) <- r(1)     
@@ -47,7 +61,7 @@ public final class ExtendedEuclide {
 			
 			//       On calcul les coéfficients de Bézout
 			
-			int S2 = S0 - q*S1;
+			long S2 = S0 - q*S1;
 			//       Mise à jour de S(0) et S(1)
 			//       S(0) <-S(1)   
 			//       S(1) <-S(2) 
@@ -55,7 +69,7 @@ public final class ExtendedEuclide {
 			S0 = S1;
 			S1 = S2;
 			
-			int T2 = T0 - q*T1;
+			long T2 = T0 - q*T1;
 			//       Mise à jour de T(0) et T(1)
 			//       T(0) <-T(1)   
 			//       T(1) <-T(2) 
@@ -64,17 +78,19 @@ public final class ExtendedEuclide {
 			T1 = T2;
 		}
 		
-		return new int[] {r0,S0,T0};
+		
+		return new long[] {r0,S0,T0};
 	}
 	
 	public int modInverse() {
 		if(!hasModInverse())
 			throw new CryptoException("Pas d'inverse modulaire");
-		return Math.floorMod(x, modulus);
+		return x;
 	}
 	
 	public boolean hasModInverse() {
-		return this.gcd == 1;
+		// modif
+		return Math.abs(this.gcd) == 1 && this.coefMultiplicateur%modulus !=0;
 	}
 
 	public int getGcd() {
@@ -95,7 +111,7 @@ public final class ExtendedEuclide {
 	
 	
 	/* AJOUT */
-	public static boolean hasInveseModulaire(int a, int b) {
+	public static boolean hasInverseModulaire(int a, int b) {
 		return new ExtendedEuclide(a, b).hasModInverse();
 	}
 	

@@ -74,8 +74,8 @@ public class ArithmeticSerieCipherService implements Cipher {
 		if(key==null || key.length!=1)
 			throw new CryptoException("La clé ne peut pas être null et doit contenir une clé valide.");
 		
-		if(!(key[0] instanceof CesarKey))
-			throw new CryptoException("Erreur xx: La clé doit être du type CesarKey.");
+		if(!(key[0] instanceof ArithmeticKeys))
+			throw new CryptoException("Erreur xx: La clé doit être du type ArithmeticKeys.");
 		
 		ArithmeticKeys keys = (ArithmeticKeys)key[0];
 		this.a = keys.getA();

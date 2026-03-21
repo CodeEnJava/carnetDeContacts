@@ -292,7 +292,7 @@ public final class AffineKeys_old {
 	used[1] = 1;
 	
 	
-	while(fixe>1 || !ExtendedEuclide.hasInveseModulaire(a, b)) {
+	while(fixe>1 || !ExtendedEuclide.hasInverseModulaire(a, b)) {
 		b = 1 +random.nextInt(N); /* une valeur comprise entre 1 et N*/
 		
 		if(used[b]==0) {

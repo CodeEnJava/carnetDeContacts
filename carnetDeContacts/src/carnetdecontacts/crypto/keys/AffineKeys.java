@@ -111,9 +111,8 @@ public final class AffineKeys {
 		public AffineKeys(int a, int b,int k, EncodingStrategy encodingStrategy) {
 			
 			if(k==0 )k = K;
-			ExtendedEuclide euclide = new ExtendedEuclide(a, b);
 			
-			if(!euclide.hasModInverse())
+			if(!ExtendedEuclide.hasInverseModulaire(a, encodingStrategy.domaineSize()))
 				throw new CryptoException("Erreur AK01: Les élément de la clé ne sont pas valide, car l'inverse modulaire n'existe pas.");
 			
 			if(encodingStrategy instanceof UnicodeEncoding && a==1 && b==0)
@@ -132,7 +131,7 @@ public final class AffineKeys {
 			this.a = a;
 			this.b = b;
 			this.encodingStrategy = encodingStrategy;
-			this.inverseModulaire = euclide.modInverse();
+			this.inverseModulaire = ExtendedEuclide.modInverse(a, encodingStrategy.domaineSize());
 		}
 		
 		
@@ -193,10 +192,14 @@ public final class AffineKeys {
 	     * @return l'ordre multiplicatif, ou -1 si l'inverse n'existe pas
 	     */
 		private static int multiplicativeOrder(int a, int N) {
-			ExtendedEuclide euclide = new ExtendedEuclide(a, N);
+			//ExtendedEuclide euclide = new ExtendedEuclide(a, N);
 			
-		    if(!euclide.hasModInverse())
-		    	return -1;
+		    //if(!euclide.hasModInverse())
+		    //	return -1;
+			
+			// modif
+			if(!ExtendedEuclide.hasInverseModulaire(a, N))
+				return -1;
 	
 		    int limite = N; // Pour éviter potentiellement boucle infinie 
 		    int result = 1;
@@ -239,8 +242,8 @@ public final class AffineKeys {
 		private static int countFixePoint(int a, int b, int N) {
 			
 			int d = ExtendedEuclide.gcd(a-1, N);
-			
-			if(b%d !=0)
+			// modif si b<0
+			if(Math.floorMod(b, d) != 0)
 				return 0;
 			
 			return d;
@@ -281,11 +284,13 @@ public final class AffineKeys {
 		/* Recherche de l'ordre multiplicatif */
 		while(order<minOrder) {
 			
-			a = 1 +random.nextInt(N); /* une valeur comprise entre 1 et N+1*/
+			a = 1 +random.nextInt(N); /* une valeur comprise entre 1 et N*/
 			
 			if(used[a]==0) {
 				used[a]=a;
-				order = multiplicativeOrder(a, N);
+				//optimisation ne calcul que si il y a un inverse modulaire
+				if (ExtendedEuclide.gcd(a, N) == 1) 
+					order = multiplicativeOrder(a, N);
 			}
 			
 			/*
@@ -313,8 +318,8 @@ public final class AffineKeys {
 		used[1] = 1;
 		
 		
-		while(fixe>1 || !ExtendedEuclide.hasInveseModulaire(a, b)) {
-			b = 1 +random.nextInt(N); /* une valeur comprise entre 1 et N*/
+		while(fixe>1) {
+			b = 1+random.nextInt(N); /* une valeur comprise entre 1 et N*/
 			
 			if(used[b]==0) {
 				used[b]=b;

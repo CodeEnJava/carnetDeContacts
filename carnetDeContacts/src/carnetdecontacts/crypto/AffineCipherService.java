@@ -1,19 +1,84 @@
 package carnetdecontacts.crypto;
 
-public final class AffineCipherSerice implements Cipher{
+import java.util.Objects;
+
+import carnetdecontacts.crypto.keys.AffineKeys;
+import carnetdecontacts.crypto.strategy.EncodingStrategy;
+
+public final class AffineCipherService implements Cipher{
 	
+	private EncodingStrategy encodingStrategy;
+	private int aKey;
+	private int bkey;
+	private int inversModulaireKey;
+	
+	
+	
+
+	public AffineCipherService(EncodingStrategy encodingStrategy) {
+		this.encodingStrategy = Objects.requireNonNull(encodingStrategy);
+	}
+	
+	/*
+	 * Modification pour utiliser la méthode isMessage() de la classe EncodingStrategy
+	 */
+	private void ValidatMessage(String message) {
+		if(!encodingStrategy.isMessageValid(message))
+			throw new CryptoException("Erreur ACS10: Le message ne peut pas être null et doit appartenir au domaine de l'encodage choisi.");
+		
+	}	
+	
+	private void readKeys( Object... objkey) {
+		
+		if(objkey==null || objkey.length!=1)
+			throw new CryptoException("Erreur ACS11: La clé ne peut pas être null et doit contenir une clé valide.");
+		
+		if(!(objkey[0] instanceof AffineKeys))
+			throw new CryptoException("Erreur ACS12: : La clé doit être du type AffineKeys.");
+		
+		AffineKeys keys = (AffineKeys)objkey[0];
+		
+		this.aKey = keys.getA();
+		this.bkey = keys.getB();
+		this.inversModulaireKey = keys.getInverseModulaire();
+	}
+	
+	private String transform(String message, boolean encryptMode) {
+		
+		StringBuilder sb = new StringBuilder();
+		int newPos = -1;
+		
+		for(int i=0; i<message.length();i++) {
+			char c = message.charAt(i);
+			int index = encodingStrategy.toIndex(c);
+			
+			newPos = encryptMode
+					? encodingStrategy.normalize(this.aKey*index+this.bkey)
+				    : encodingStrategy.normalize(this.inversModulaireKey*(index - this.bkey));
+			
+
+			sb.append(encodingStrategy.toChar(newPos));
+			
+		}
+		
+		return sb.toString();
+	}
 	
 
 	@Override
 	public String encrypt(String message, Object... key) {
-		// TODO Auto-generated method stub
-		return null;
+		ValidatMessage( message);
+		readKeys(key);
+		return transform( message,  true);
 	}
+	
+	
 
 	@Override
 	public String decrypt(String message, Object... key) {
-		// TODO Auto-generated method stub
-		return null;
+		ValidatMessage( message);
+		readKeys(key);
+		return transform( message,  false);
 	}
 	
 	
