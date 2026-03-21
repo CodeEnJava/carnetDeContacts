@@ -83,12 +83,12 @@ public final class ExtendedEuclide {
 	}
 	
 	public int modInverse() {
-		if(!hasModInverse())
+		if(!hasModularInverse())
 			throw new CryptoException("Pas d'inverse modulaire");
 		return x;
 	}
 	
-	public boolean hasModInverse() {
+	public boolean hasModularInverse() {
 		// modif
 		return Math.abs(this.gcd) == 1 && this.coefMultiplicateur%modulus !=0;
 	}
@@ -111,8 +111,8 @@ public final class ExtendedEuclide {
 	
 	
 	/* AJOUT */
-	public static boolean hasInverseModulaire(int a, int b) {
-		return new ExtendedEuclide(a, b).hasModInverse();
+	public static boolean hasModularInverse(int a, int b) {
+		return new ExtendedEuclide(a, b).hasModularInverse();
 	}
 	
 	public static int gcd(int a, int b) {

@@ -112,7 +112,7 @@ public final class AffineKeys {
 			
 			if(k==0 )k = K;
 			
-			if(!ExtendedEuclide.hasInverseModulaire(a, encodingStrategy.domaineSize()))
+			if(!ExtendedEuclide.hasModularInverse(a, encodingStrategy.domaineSize()))
 				throw new CryptoException("Erreur AK01: Les élément de la clé ne sont pas valide, car l'inverse modulaire n'existe pas.");
 			
 			if(encodingStrategy instanceof UnicodeEncoding && a==1 && b==0)
@@ -198,7 +198,7 @@ public final class AffineKeys {
 		    //	return -1;
 			
 			// modif
-			if(!ExtendedEuclide.hasInverseModulaire(a, N))
+			if(!ExtendedEuclide.hasModularInverse(a, N))
 				return -1;
 	
 		    int limite = N; // Pour éviter potentiellement boucle infinie 

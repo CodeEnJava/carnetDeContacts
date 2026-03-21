@@ -30,7 +30,7 @@ public final class AffineKeys_old {
 		
 		if(k==0 )k = K;
 		ExtendedEuclide euclide = new ExtendedEuclide(a, b);
-		if(!euclide.hasModInverse())
+		if(!euclide.hasModularInverse())
 			throw new CryptoException("Erreur AK01: Les élément de la clé ne sont pas valide, car l'inverse modulaire n'existe pas.");
 		
 		/*
@@ -205,7 +205,7 @@ public final class AffineKeys_old {
 
 	private static int multiplicativeOrder(int a, int N) {
 		ExtendedEuclide euclide = new ExtendedEuclide(a, N);
-	    if(!euclide.hasModInverse())
+	    if(!euclide.hasModularInverse())
 	    	return -1;
 	    // mise en place de la recherche de l'ordre.
 	    int limite = N; // Pour éviter potentiellement boucle infinie 
@@ -292,7 +292,7 @@ public final class AffineKeys_old {
 	used[1] = 1;
 	
 	
-	while(fixe>1 || !ExtendedEuclide.hasInverseModulaire(a, b)) {
+	while(fixe>1 || !ExtendedEuclide.hasModularInverse(a, b)) {
 		b = 1 +random.nextInt(N); /* une valeur comprise entre 1 et N*/
 		
 		if(used[b]==0) {
